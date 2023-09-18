@@ -14,9 +14,24 @@
 * __cat "Домашние животные" "Вьючные животные" > "Общие животные"__
 * __cat "Общие животные"__
 * __mv "Общие животные" "Друзья человека"__
-![Картинка 1](images/1.jpg)
+* ![Картинка 1](images/1.jpg)
 
 2. Создать директорию, переместить файл туда.
 * __mkdir my_animals__
 * __mv "Друзья человека" my_animals/__
 * ![Картинка 2](images/2.jpg)
+
+3. Подключить дополнительный репозиторий MySQL. Установить любой пакет
+   из этого репозитория.
+* __wget https://dev.mysql.com/get/mysql-apt-config_0.8.24-1_all.deb__
+* __sudo dpkg -i mysql-apt-config_0.8.24-1_all.deb__
+* __sudo apt install mysql-server__
+* __sudo service mysql status__
+* ![Картинка 3](images/3.jpg)
+
+4. Установить и удалить deb-пакет с помощью dpkg.
+* __wget http://ftp.us.debian.org/debian/pool/main/s/sl/sl_5.02-1_amd64.deb__
+* __sudo dpkg -i sl_5.02-1_amd64.deb__
+* __sudo dpkg -r sl__
+* ![Картинка 4](images/4.jpg)
+
