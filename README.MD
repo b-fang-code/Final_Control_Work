@@ -34,4 +34,6 @@
 * __sudo dpkg -i sl_5.02-1_amd64.deb__
 * __sudo dpkg -r sl__
 * ![Картинка 4](images/4.jpg)
+5. Выложить историю команд в терминале ubuntu
+* [Список команд](Commands.MD)
 
