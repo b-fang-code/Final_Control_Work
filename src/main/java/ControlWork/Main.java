@@ -7,6 +7,7 @@ public class Main {
     public static void main(String[] args) {
         AnimalRegistry registry = new AnimalRegistry();
 
+        // Создаем и добавляем животных в реестр
         Dog dog1 = new Dog("Рекс", "Сидеть", "2019-04-15");
         Dog dog2 = new Dog("Барон", "Апорт", "2020-07-20");
 
@@ -38,67 +39,107 @@ public class Main {
         registry.addAnimal(donkey1);
         registry.addAnimal(donkey2);
 
-        List<Animal> allAnimals = registry.getAnimals();
-        for (Animal animal : allAnimals) {
-            System.out.println(animal);
-        }
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
             System.out.println("Меню:");
             System.out.println("1. Завести новое животное");
-            System.out.println("2. Просмотреть список животных");
-            System.out.println("3. Выход");
-            System.out.print("Выберите действие: ");
+            System.out.println("2. Посмотреть список всех животных");
+            System.out.println("3. Определить класс животного");
+            System.out.println("4. Увидеть список команд животного");
+            System.out.println("5. Обучить животное новым командам");
+            System.out.println("6. Выйти из программы");
 
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Чтение символа новой строки после выбора
+            scanner.nextLine(); // Чтение символа новой строки после ввода числа
 
             switch (choice) {
                 case 1:
                     // Завести новое животное
                     System.out.print("Введите имя животного: ");
                     String name = scanner.nextLine();
-                    System.out.print("Введите команду животного: ");
+                    System.out.print("Введите команду для животного: ");
                     String command = scanner.nextLine();
                     System.out.print("Введите дату рождения животного (гггг-мм-дд): ");
                     String birthDate = scanner.nextLine();
 
-                    // Определить класс животного
-                    Animal animal;
-                    System.out.print("Это домашнее или вьючное животное? (д/в): ");
-                    String type = scanner.nextLine();
-
-                    if (type.equalsIgnoreCase("д")) {
-                        animal = new HomeAnimal(name, command, birthDate);
-                    } else if (type.equalsIgnoreCase("в")) {
-                        animal = new PackAnimal(name, command, birthDate);
-                    } else {
-                        System.out.println("Некорректный выбор типа животного. Попробуйте снова.");
-                        continue; // Перезапускаем цикл, чтобы снова ввести данные
-                    }
-
-
-                    // Добавить животное в реестр
-                    registry.addAnimal(animal);
-                    System.out.println("Животное добавлено в реестр.");
+                    // Определение класса животного (можно реализовать на основе введенных данных)
+                    Animal newAnimal = new Animal(name, command, birthDate);
+                    registry.addAnimal(newAnimal);
+                    System.out.println("Животное успешно добавлено в реестр!");
                     break;
                 case 2:
-                    // Просмотреть список животных
-                    List<Animal> allAnimal = registry.getAnimals();
-                    for (Animal a : allAnimals) {
-                        System.out.println(a);
+                    // Посмотреть список всех животных
+                    List<Animal> allAnimals = registry.getAnimals();
+                    for (Animal animal : allAnimals) {
+                        System.out.println(animal);
                     }
                     break;
                 case 3:
+                    // Определить класс животного
+                    System.out.print("Введите имя животного: ");
+                    String animalName = scanner.nextLine();
+                    Animal foundAnimal = findAnimalByName(registry, animalName);
+                    if (foundAnimal != null) {
+                        if (foundAnimal instanceof HomeAnimal) {
+                            System.out.println("Это домашнее животное.");
+                        } else if (foundAnimal instanceof PackAnimal) {
+                            System.out.println("Это вьючное животное.");
+                        } else {
+                            System.out.println("Класс животного не определен.");
+                        }
+                    } else {
+                        System.out.println("Животное не найдено.");
+                    }
+                    break;
+                case 4:
+                    // Увидеть список команд животного
+                    System.out.print("Введите имя животного: ");
+                    String animalName2 = scanner.nextLine();
+                    Animal foundAnimal2 = findAnimalByName(registry, animalName2);
+                    if (foundAnimal2 != null) {
+                        List<String> commands = foundAnimal2.getCommands();
+                        System.out.println("Список команд, которые выполняет животное:");
+                        for (String cmd : commands) {
+                            System.out.println(cmd);
+                        }
+                    } else {
+                        System.out.println("Животное не найдено.");
+                    }
+                    break;
+                case 5:
+                    // Обучить животное новым командам
+                    System.out.print("Введите имя животного: ");
+                    String animalName3 = scanner.nextLine();
+                    Animal foundAnimal3 = findAnimalByName(registry, animalName3);
+                    if (foundAnimal3 != null) {
+                        System.out.print("Введите новую команду для обучения животному: ");
+                        String newCommand = scanner.nextLine();
+                        foundAnimal3.addCommand(newCommand);
+                        System.out.println("Команда успешно добавлена!");
+                    } else {
+                        System.out.println("Животное не найдено.");
+                    }
+                    break;
+                case 6:
                     // Выход из программы
                     System.out.println("Программа завершена.");
                     scanner.close();
                     System.exit(0);
                 default:
-                    System.out.println("Некорректный выбор. Попробуйте снова.");
-                    break;
+                    System.out.println("Неправильный выбор. Попробуйте снова.");
             }
         }
+    }
+
+    // Метод для поиска животного по имени в реестре
+    private static Animal findAnimalByName(AnimalRegistry registry, String name) {
+        List<Animal> allAnimals = registry.getAnimals();
+        for (Animal animal : allAnimals) {
+            if (animal.getName().equalsIgnoreCase(name)) {
+                return animal;
+            }
+        }
+        return null;
     }
 }
